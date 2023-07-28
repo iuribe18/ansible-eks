@@ -6,4 +6,4 @@
     region: us-east-1
     tags:
       Name: "{{ vpc_name }}"
-    tenancy: dedicated
+    tenancy: default

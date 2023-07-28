@@ -1,0 +1,20 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+      - include_role:
+           name: networking
+
+# - hosts: localhost
+#   gather_facts: no
+#   tasks:
+#       - include_role:
+#            name: aks
+#         vars:
+#            name: akscluster
+#            resource_group: Santander
+
+# - hosts: localhost
+#   gather_facts: no
+#   tasks:
+#       - include_role:
+#            name: argo
