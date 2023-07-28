@@ -1,0 +1,18 @@
+# Variables for aks
+resource_group: Santander
+location: eastus
+cluster_name: cluster-santander
+dns_prefix: test-santander
+kubernetes_version: 1.26.0
+
+# agent pool profile
+node_count_bak: 3
+max_pods_bak: 110
+nodepool_name_bak: nodepool1
+node_osdisk_size_gb_bak: 30
+node_vm_size_bak: Standard_DS1_v2
+# not included
+storage_profile_bak: ManagedDisks
+os_type_bak: Linux
+
+network_plugin_bak: kubenet

@@ -1,0 +1,36 @@
+---
+- name: Create a k8s namespace
+  kubernetes.core.k8s:
+    name: argocd
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Descargar Manifest ArgoCD
+  get_url:
+    url: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    dest: /tmp/argocd-install.yaml
+
+- name: Instalar Argo CD
+  k8s:
+    namespace: argocd
+    state: present
+    src: /tmp/argocd-install.yaml
+- name: Cambiar el Servicio argocd-server a LoadBalancer
+  k8s:
+    kubeconfig: ~/.kube  # Sustituye esto por la ruta a tu archivo kubeconfig si es necesario
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: argocd-server
+        namespace: argocd
+      spec:
+        type: LoadBalancer
+- name: Get the current ArgoCD admin password
+  shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
+  register: old_password
+
+- name: Change the ArgoCD admin password
+  shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"

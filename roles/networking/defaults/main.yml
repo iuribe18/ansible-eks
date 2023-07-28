@@ -1,0 +1,6 @@
+# Variables for aks
+location: eastus
+vpc_name: vpc-santander
+subnet_name: public_subnet
+cidr_vnet: "10.0.0.0/16"
+cidr_net: "10.0.1.0/24"
