@@ -49,4 +49,4 @@
     region: "{{ region }}"
     tags:
       Name: "{{ vpc_name }}-subnet-4"
-  register: public_subnet3
+  register: public_subnet4
