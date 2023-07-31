@@ -16,3 +16,4 @@
         cidr_ip: 0.0.0.0/0
         # description to use if example-other needs to be created
         group_desc: allow all outbound traffic
+  register: sg_public
