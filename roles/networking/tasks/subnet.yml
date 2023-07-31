@@ -8,7 +8,8 @@
     state: present
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: "{{ cidr_subnet1 }}"
-    map_public: no
+    az: "{{ az1 }}"
+    map_public: yes
     region: "{{ region }}"
     tags:
       Name: "{{ vpc_name }}-subnet-1"
