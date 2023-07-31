@@ -20,3 +20,6 @@
 
 - name: Crear Subnets
   import_tasks: subnet.yml
+
+- name: Crear Route Table
+  import_tasks: route_table.yml
