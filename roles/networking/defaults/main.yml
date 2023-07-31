@@ -5,3 +5,7 @@ subnet_name: public_subnet
 cidr_vnet: "10.0.0.0/16"
 cidr_subnet1: "10.0.1.0/24"
 az1: "us-east-1a"
+cidr_subnet2: "10.0.2.0/24"
+az2: "us-east-1b"
+cidr_subnet3: "10.0.3.0/24"
+az3: "us-east-1c"
