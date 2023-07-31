@@ -13,6 +13,7 @@
     region: "{{ region }}"
     tags:
       Name: "{{ vpc_name }}-subnet-1"
+  register: public_subnet1
 
 - name: Create subnet 2 in VPC
   amazon.aws.ec2_vpc_subnet:
@@ -24,6 +25,7 @@
     region: "{{ region }}"
     tags:
       Name: "{{ vpc_name }}-subnet-2"
+  register: public_subnet2
 
 - name: Create subnet 3 in VPC
   amazon.aws.ec2_vpc_subnet:
@@ -35,3 +37,4 @@
     region: "{{ region }}"
     tags:
       Name: "{{ vpc_name }}-subnet-3"
+  register: public_subnet3

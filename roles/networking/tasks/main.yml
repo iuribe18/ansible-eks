@@ -18,13 +18,5 @@
       Name: "{{ vpc_name }}-igw"
   register: igw
 
-- name: Attach Internet Gateway to VPC
-  amazon.aws.ec2_vpc_igw:
-    state: present
-    vpc_id: "{{ vpc.vpc.id }}"
-    igw_id: "{{ igw.gateway.id }}"
-    region: "{{ region }}"
-
-
 - name: Crear Subnets
   import_tasks: subnet.yml
