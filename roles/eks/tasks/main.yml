@@ -5,7 +5,7 @@
     version: "{{ kubernetes_version }}"
     role_arn: "arn:aws:iam::348691576534:role/EKS_Cluster"
     subnets:
-      - ["{{ public_subnet2.id }}", "{{ public_subnet3.id }}", "{{ public_subnet4.id }}"]
+      - ["{{ public_subnet2.subnet.id }}", "{{ public_subnet3.subnet.id }}", "{{ public_subnet4.subnet.id }}"]
     security_groups:
       - "{{ sg_public }}"
     region: "{{ region }}"
