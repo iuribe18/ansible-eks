@@ -1,15 +1,14 @@
-- name: Create Virtual Network
-  azure_rm_virtualnetwork:
-      resource_group: "{{ resource_group }}"
-      #name: "{{ name }}{{ rpfx }}"
-      name: "{{ vnet_name }}"
-      address_prefixes_cidr: "{{ cidr_vnet }}"
+# Gather information about any VPC with a tag key Name and value Example
+- amazon.aws.ec2_vpc_net_info:
+    filters:
+      "tag:Name": "{{ vpc_name }}"
 
-- name: Create subnet
-  azure_rm_subnet:
-      resource_group: "{{ resource_group }}"
-      name: "{{ subnet_name }}"
-      address_prefix_cidr: "{{ cidr_net }}"
-      #virtual_network_name: "{{ name }}{{ rpfx }}"
-      virtual_network_name: "{{ vnet_name }}"
-  register: subnet
+- name: Create subnet 1 in VPC
+  amazon.aws.ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpc.vpc.id }}"
+    cidr: 10.10.0.0/24
+    map_public: no
+    region: us-east-1
+    tags:
+      Name: "{{ vpc_name }}-subnet-1"
