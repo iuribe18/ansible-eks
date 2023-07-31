@@ -10,7 +10,8 @@
   register: vpc
 
 - name: Create an Internet Gateway
-  amazon.aws.ec2_igw:
+  #amazon.aws.ec2_igw:
+  amazon.aws.ec2_vpc_igw:
     region: "{{ region }}"
     vpc_id: "{{ vpc.vpc.id }}"
     tags:
