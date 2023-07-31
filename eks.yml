@@ -3,12 +3,14 @@
   tasks:
       - include_role:
            name: networking
+        tags: networking
 
 - hosts: localhost
   gather_facts: no
   tasks:
       - include_role:
            name: eks
+        tags: eks
 
 # - hosts: localhost
 #   gather_facts: no
