@@ -8,3 +8,6 @@
       Name: "{{ vpc_name }}"
     tenancy: default
   register: vpc
+
+- name: Crear Subnets
+  import_tasks: subnet.yml
