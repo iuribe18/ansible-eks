@@ -1,9 +1,9 @@
 # Variables for aks
 resource_group: Santander
-location: eastus
+region: us-east-1
 cluster_name: cluster-santander
 dns_prefix: test-santander
-kubernetes_version: 1.26.0
+kubernetes_version: 1.27
 
 # agent pool profile
 node_count_bak: 3

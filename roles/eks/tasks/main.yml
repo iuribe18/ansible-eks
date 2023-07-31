@@ -2,10 +2,11 @@
 - name: Create an EKS cluster
   community.aws.eks_cluster:
     name: "{{ cluster_name }}"
-    version: 1.27
+    version: "{{ kuberntes_version }}"
     role_arn: "arn:aws:iam::348691576534:role/EKS_Cluster"
     subnets:
       - ["{{ public_subnet1 }}", "{{ public_subnet2 }}", "{{ public_subnet3 }}", "{{ public_subnet4 }}"]
     security_groups:
       - "{{ sg_public }}"
+    region: "{{ region }}"
   register: control_plane
