@@ -38,3 +38,15 @@
     tags:
       Name: "{{ vpc_name }}-subnet-3"
   register: public_subnet3
+
+- name: Create subnet 3 in VPC
+  amazon.aws.ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpc.vpc.id }}"
+    cidr: "{{ cidr_subnet4 }}"
+    az: "{{ az3 }}"
+    map_public: yes
+    region: "{{ region }}"
+    tags:
+      Name: "{{ vpc_name }}-subnet-4"
+  register: public_subnet3
