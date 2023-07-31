@@ -7,7 +7,7 @@
   amazon.aws.ec2_vpc_subnet:
     state: present
     vpc_id: "{{ vpc.vpc.id }}"
-    cidr: 10.10.0.0/24
+    cidr: "{{ cidr_subnet1 }}"
     map_public: no
     region: "{{ region }}"
     tags:
