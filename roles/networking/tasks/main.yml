@@ -3,7 +3,7 @@
   amazon.aws.ec2_vpc_net:
     name: "{{ vpc_name }}"
     cidr_block: "{{ cidr_vnet }}"
-    region: us-east-1
+    region: "{{ region }}"
     tags:
       Name: "{{ vpc_name }}"
     tenancy: default
