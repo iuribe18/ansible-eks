@@ -9,6 +9,6 @@
       - "{{ public_subnet3.subnet.id }}"
       - "{{ public_subnet4.subnet.id }}"
     security_groups:
-      - "{{ sg_public }}"
+      - "{{ sg_public.group_id }}"
     region: "{{ region }}"
   register: control_plane
