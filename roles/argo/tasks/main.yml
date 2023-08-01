@@ -20,9 +20,22 @@
     namespace: argocd
     state: present
     src: /tmp/argocd-install.yaml
+# - name: Cambiar el Servicio argocd-server a LoadBalancer
+#   k8s:
+#     kubeconfig: ~/.kube  # Sustituye esto por la ruta a tu archivo kubeconfig si es necesario
+#     state: present
+#     definition:
+#       apiVersion: v1
+#       kind: Service
+#       metadata:
+#         name: argocd-server
+#         namespace: argocd
+#       spec:
+#         type: LoadBalancer
+
 - name: Cambiar el Servicio argocd-server a LoadBalancer
-  k8s:
-    kubeconfig: ~/.kube  # Sustituye esto por la ruta a tu archivo kubeconfig si es necesario
+  community.kubernetes.k8s:
+    kubeconfig: ~/.kube/config
     state: present
     definition:
       apiVersion: v1
@@ -32,6 +45,7 @@
         namespace: argocd
       spec:
         type: LoadBalancer
+
 - name: Get the current ArgoCD admin password
   shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
   register: old_password
