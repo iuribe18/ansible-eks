@@ -1,41 +1,46 @@
-- name: Install CoreDNS
-  community.kubernetes.k8s:
-    state: present
-    kubeconfig: /home/osboxes/.kube/config
-    definition:
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: coredns
-        namespace: kube-system
-      spec:
-        ...
-  register: coredns
+- name: Apply CoreDNS
+  ansible.builtin.command:
+    cmd: kubectl apply -f https://amazonaws-charts.storage.googleapis.com/stable/coredns/coredns-v1.10.1-eksbuild.1.yaml
+  delegate_to: localhost
 
-- name: Install kube-proxy
-  community.kubernetes.k8s:
-    state: present
-    kubeconfig: /home/osboxes/.kube/config
-    definition:
-      apiVersion: apps/v1
-      kind: DaemonSet
-      metadata:
-        name: kube-proxy
-        namespace: kube-system
-      spec:
-        ...
-  register: kube_proxy
+# - name: Install CoreDNS
+#   community.kubernetes.k8s:
+#     state: present
+#     kubeconfig: /home/osboxes/.kube/config
+#     definition:
+#       apiVersion: apps/v1
+#       kind: Deployment
+#       metadata:
+#         name: coredns
+#         namespace: kube-system
+#       spec:
+#         ...
+#   register: coredns
 
-- name: Install Amazon VPC CNI
-  community.kubernetes.k8s:
-    state: present
-    kubeconfig: /home/osboxes/.kube/config
-    definition:
-      apiVersion: apps/v1
-      kind: DaemonSet
-      metadata:
-        name: aws-node
-        namespace: kube-system
-      spec:
-        ...
-  register: aws_cni
+# - name: Install kube-proxy
+#   community.kubernetes.k8s:
+#     state: present
+#     kubeconfig: /home/osboxes/.kube/config
+#     definition:
+#       apiVersion: apps/v1
+#       kind: DaemonSet
+#       metadata:
+#         name: kube-proxy
+#         namespace: kube-system
+#       spec:
+#         ...
+#   register: kube_proxy
+
+# - name: Install Amazon VPC CNI
+#   community.kubernetes.k8s:
+#     state: present
+#     kubeconfig: /home/osboxes/.kube/config
+#     definition:
+#       apiVersion: apps/v1
+#       kind: DaemonSet
+#       metadata:
+#         name: aws-node
+#         namespace: kube-system
+#       spec:
+#         ...
+#   register: aws_cni
