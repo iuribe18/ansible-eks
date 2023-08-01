@@ -21,3 +21,6 @@
 #     KUBECONFIG: /home/osboxes/.kube/config
 #   become: yes
 #   become_user: osboxes
+
+- name: Adding addons
+  import_tasks: addons.yml
