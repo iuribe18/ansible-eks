@@ -33,9 +33,22 @@
 #       spec:
 #         type: LoadBalancer
 
+# - name: Cambiar el Servicio argocd-server a LoadBalancer
+#   community.kubernetes.k8s:
+#     kubeconfig: ~/.kube/config
+#     state: present
+#     definition:
+#       apiVersion: v1
+#       kind: Service
+#       metadata:
+#         name: argocd-server
+#         namespace: argocd
+#       spec:
+#         type: LoadBalancer
+
 - name: Cambiar el Servicio argocd-server a LoadBalancer
   community.kubernetes.k8s:
-    kubeconfig: ~/.kube/config
+    kubeconfig: "~/.kube/config"
     state: present
     definition:
       apiVersion: v1
