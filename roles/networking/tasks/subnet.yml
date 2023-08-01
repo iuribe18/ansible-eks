@@ -44,7 +44,7 @@
     state: present
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: "{{ cidr_subnet4 }}"
-    az: "{{ az3 }}"
+    az: "{{ az4 }}"
     map_public: yes
     region: "{{ region }}"
     tags:
