@@ -1,4 +1,21 @@
-- name: Create EKS Node Group
+# - name: Create EKS Node Group
+#   ansible.builtin.command:
+#     cmd: >
+#       aws eks create-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1 --scaling-config minSize=1,maxSize=2,desiredSize=1 
+#       --disk-size 30 --subnets subnet-00a2142aa6affae56 subnet-0377a6367d4a41ab8 subnet-0806a09f085cf733d 
+#       --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole 
+#       --instance-types t3.medium --ami-type AL2_x86_64 --capacity-type ON_DEMAND
+#   delegate_to: localhost
+
+- name: Check if EKS Node Group exists
+  ansible.builtin.command:
+    cmd: >
+      aws eks describe-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1
+  delegate_to: localhost
+  register: nodegroup_result
+  ignore_errors: true
+
+- name: Create EKS Node Group if it doesn't exist
   ansible.builtin.command:
     cmd: >
       aws eks create-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1 --scaling-config minSize=1,maxSize=2,desiredSize=1 
@@ -6,3 +23,4 @@
       --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole 
       --instance-types t3.medium --ami-type AL2_x86_64 --capacity-type ON_DEMAND
   delegate_to: localhost
+  when: nodegroup_result.rc != 0
