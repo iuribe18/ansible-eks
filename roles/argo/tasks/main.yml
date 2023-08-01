@@ -1,5 +1,4 @@
 ---
-
 - name: Adding nodes
   import_tasks: kubeconfig.yml
 
