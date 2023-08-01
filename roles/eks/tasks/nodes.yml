@@ -1,0 +1,7 @@
+- name: Create EKS Node Group
+  ansible.builtin.command:
+    cmd: >
+      aws eks create-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1 
+      --node-role AmazonEKSNodeRole --subnets vpc-santander-subnet-1, vpc-santander-subnet-1, vpc-santander-subnet-3
+      --scaling-config minSize=1, maxSize=2, desiredSize=1
+  delegate_to: localhost

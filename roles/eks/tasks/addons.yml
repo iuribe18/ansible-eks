@@ -3,6 +3,11 @@
     cmd: kubectl apply -f https://amazonaws-charts.storage.googleapis.com/stable/coredns/coredns-v1.10.1-eksbuild.1.yaml
   delegate_to: localhost
 
+- name: Create CoreDNS addon
+  ansible.builtin.command:
+    cmd: aws eks create-addon --cluster-name cluster-santander --addon-name coredns --addon-version v1.10.1-eksbuild.3
+  delegate_to: localhost
+
 # - name: Install CoreDNS
 #   community.kubernetes.k8s:
 #     state: present
