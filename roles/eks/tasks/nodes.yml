@@ -7,21 +7,30 @@
 #       --instance-types t3.medium --ami-type AL2_x86_64 --capacity-type ON_DEMAND
 #   delegate_to: localhost
 
-- name: Wait for EKS cluster to be active
-  community.aws.aws_resource_action:
-    service: eks
-    action: DescribeCluster
-    wait: yes
-    wait_timeout: 1800
-    params:
-      name: "{{ cluster_name }}"
-  register: cluster_state
+# - name: Wait for EKS cluster to be active
+#   community.aws.aws_resource_action:
+#     service: eks
+#     action: DescribeCluster
+#     wait: yes
+#     wait_timeout: 1800
+#     params:
+#       name: "{{ cluster_name }}"
+#   register: cluster_state
 
-- name: Assert cluster is active
-  ansible.builtin.assert:
-    that:
-      - "'ACTIVE' in cluster_state.response.cluster.status"
-    fail_msg: "EKS Cluster is not in an 'ACTIVE' state"
+# - name: Assert cluster is active
+#   ansible.builtin.assert:
+#     that:
+#       - "'ACTIVE' in cluster_state.response.cluster.status"
+#     fail_msg: "EKS Cluster is not in an 'ACTIVE' state"
+
+- name: Wait for EKS cluster to be active
+  ansible.builtin.command: >
+    aws eks describe-cluster --name "{{ cluster_name }}" --query "cluster.status" --output text
+  register: cluster_state
+  until: cluster_state.stdout == 'ACTIVE'
+  retries: 60
+  delay: 30
+  delegate_to: localhost
 
 - name: Check if EKS Node Group exists
   ansible.builtin.command:
