@@ -39,7 +39,7 @@
       Name: "{{ vpc_name }}-subnet-3"
   register: public_subnet3
 
-- name: Create subnet 3 in VPC
+- name: Create subnet 4 in VPC
   amazon.aws.ec2_vpc_subnet:
     state: present
     vpc_id: "{{ vpc.vpc.id }}"

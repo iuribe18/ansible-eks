@@ -12,3 +12,12 @@
       - "{{ sg_public.group_id }}"
     region: "{{ region }}"
   register: control_plane
+
+# - name: Update kubeconfig
+#   ansible.builtin.command:
+#     cmd: aws eks update-kubeconfig --name cluster-santander --region us-east-1
+#   delegate_to: localhost
+#   environment:
+#     KUBECONFIG: /home/osboxes/.kube/config
+#   become: yes
+#   become_user: osboxes
