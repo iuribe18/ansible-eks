@@ -12,8 +12,8 @@
            name: eks
         tags: eks
 
-- hosts: localhost
-  gather_facts: no
-  tasks:
-      - include_role:
-           name: argo
+# - hosts: localhost
+#   gather_facts: no
+#   tasks:
+#       - include_role:
+#            name: argo
