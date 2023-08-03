@@ -1,28 +1,3 @@
-# - name: Create EKS Node Group
-#   ansible.builtin.command:
-#     cmd: >
-#       aws eks create-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1 --scaling-config minSize=1,maxSize=2,desiredSize=1 
-#       --disk-size 30 --subnets subnet-00a2142aa6affae56 subnet-0377a6367d4a41ab8 subnet-0806a09f085cf733d 
-#       --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole 
-#       --instance-types t3.medium --ami-type AL2_x86_64 --capacity-type ON_DEMAND
-#   delegate_to: localhost
-
-# - name: Wait for EKS cluster to be active
-#   community.aws.aws_resource_action:
-#     service: eks
-#     action: DescribeCluster
-#     wait: yes
-#     wait_timeout: 1800
-#     params:
-#       name: "{{ cluster_name }}"
-#   register: cluster_state
-
-# - name: Assert cluster is active
-#   ansible.builtin.assert:
-#     that:
-#       - "'ACTIVE' in cluster_state.response.cluster.status"
-#     fail_msg: "EKS Cluster is not in an 'ACTIVE' state"
-
 - name: Wait for EKS cluster to be active
   ansible.builtin.command: >
     aws eks describe-cluster --name "{{ cluster_name }}" --query "cluster.status" --output text
@@ -46,6 +21,6 @@
       aws eks create-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1 --scaling-config minSize=1,maxSize=2,desiredSize=1 
       --disk-size 30 --subnets subnet-00a2142aa6affae56 subnet-0377a6367d4a41ab8 subnet-0806a09f085cf733d 
       --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole 
-      --instance-types t3.medium --ami-type AL2_x86_64 --remote-access ec2SshKey=santander,sourceSecurityGroups=vpc-santander --capacity-type ON_DEMAND
+      --instance-types t3.medium --ami-type AL2_x86_64 --remote-access ec2SshKey=santander --capacity-type ON_DEMAND
   delegate_to: localhost
   when: nodegroup_result.rc != 0
