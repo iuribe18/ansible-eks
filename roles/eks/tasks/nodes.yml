@@ -32,11 +32,10 @@
 - set_fact:
     vpc_id: "{{ vpc_id.stdout }}"
 
-
 - name: Get subnets
   ansible.builtin.command:
     cmd: >
-      aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id.stdout }} --query 'Subnets[*].SubnetId' --output text
+      aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text
     register: subnets_result
   delegate_to: localhost
 
