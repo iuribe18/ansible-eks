@@ -23,11 +23,8 @@
   register: subnets_result
   delegate_to: localhost
 
-# - set_fact:
-#     subnets: "{{ subnets_result.stdout.split('\t') | join(' ') }}"
-
 - set_fact:
-    subnets_list: "{{ subnets_result.split(' ') }}"
+    subnets: "{{ subnets_result.stdout }}"
 
 # - name: Create EKS Node Group if it doesn't exist
 #   ansible.builtin.command:
