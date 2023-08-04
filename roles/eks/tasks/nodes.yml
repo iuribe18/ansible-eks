@@ -1,12 +1,3 @@
-- name: Wait for EKS cluster to be active
-  ansible.builtin.command: >
-    aws eks describe-cluster --name "{{ cluster_name }}" --query "cluster.status" --output text
-  register: cluster_state
-  until: cluster_state.stdout == 'ACTIVE'
-  retries: 60
-  delay: 30
-  delegate_to: localhost
-
 - name: Check if EKS Node Group exists
   ansible.builtin.command:
     cmd: >
