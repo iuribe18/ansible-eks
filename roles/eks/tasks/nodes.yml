@@ -23,8 +23,11 @@
   register: subnets_result
   delegate_to: localhost
 
+# - set_fact:
+#     subnets: "{{ subnets_result.stdout.split('\t') | join(' ') }}"
+
 - set_fact:
-    subnets: "{{ subnets_result.stdout.split('\t') | join(' ') }}"
+    subnets_list: "{{ subnets.split(' ') }}"
 
 # - name: Create EKS Node Group if it doesn't exist
 #   ansible.builtin.command:
@@ -51,7 +54,8 @@
       - --disk-size
       - "30"
       - --subnets
-      - "{{ subnets }}"
+      #- "{{ subnets }}"
+      - - "{{ subnets_list | join(' ') }}"
       - --node-role
       - "arn:aws:iam::348691576534:role/AmazonEKSNodeRole"
       - --instance-types
