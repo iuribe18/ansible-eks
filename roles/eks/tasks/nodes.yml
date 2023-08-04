@@ -15,12 +15,23 @@
   register: nodegroup_result
   ignore_errors: true
 
+# - name: Get VPC ID by Name
+#   ansible.builtin.shell:
+#     cmd: >
+#       aws ec2 describe-vpcs --filters "Name=tag:Name,Values={{ vpc_name }}" --query "Vpcs[0].VpcId" --output text
+#     register: vpc_id
+#   delegate_to: localhost
+
 - name: Get VPC ID by Name
-  ansible.builtin.shell:
+  command:
     cmd: >
       aws ec2 describe-vpcs --filters "Name=tag:Name,Values={{ vpc_name }}" --query "Vpcs[0].VpcId" --output text
-    register: vpc_id
+  register: vpc_id
   delegate_to: localhost
+
+- set_fact:
+    vpc_id: "{{ vpc_id.stdout }}"
+
 
 - name: Get subnets
   ansible.builtin.command:
