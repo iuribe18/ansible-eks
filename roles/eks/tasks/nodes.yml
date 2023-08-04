@@ -15,11 +15,25 @@
   register: nodegroup_result
   ignore_errors: true
 
+- name: Get VPC ID by Name
+  ansible.builtin.command:
+    cmd: >
+      aws ec2 describe-vpcs --filters "Name=tag:Name,Values={{ vpc_name }}" --query "Vpcs[0].VpcId" --output text
+    register: vpc_id_result
+  delegate_to: localhost
+
+- name: Get subnets
+  ansible.builtin.command:
+    cmd: >
+      aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id_result.stdout }} --query 'Subnets[*].SubnetId' --output text
+    register: subnets_result
+  delegate_to: localhost
+
 - name: Create EKS Node Group if it doesn't exist
   ansible.builtin.command:
     cmd: >
       aws eks create-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}" --scaling-config minSize=1,maxSize=2,desiredSize=1 
-      --disk-size 30 --subnets subnet-00a2142aa6affae56 subnet-0377a6367d4a41ab8 subnet-0806a09f085cf733d 
+      --disk-size 30 --subnets {{ subnets_result.stdout | join(' ') }}
       --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole 
       --instance-types "{{ instance_type }}" --ami-type "{{ ami }}" --remote-access ec2SshKey=santander --capacity-type ON_DEMAND
   delegate_to: localhost
