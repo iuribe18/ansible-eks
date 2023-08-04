@@ -27,7 +27,7 @@
 #     subnets: "{{ subnets_result.stdout.split('\t') | join(' ') }}"
 
 - set_fact:
-    subnets_list: "{{ subnets.split(' ') }}"
+    subnets_list: "{{ subnets_result.split(' ') }}"
 
 # - name: Create EKS Node Group if it doesn't exist
 #   ansible.builtin.command:
