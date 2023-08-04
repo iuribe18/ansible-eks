@@ -16,10 +16,10 @@
   ignore_errors: true
 
 - name: Get VPC ID by Name
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: >
       aws ec2 describe-vpcs --filters "Name=tag:Name,Values={{ vpc_name }}" --query "Vpcs[0].VpcId" --output text
-    register: vpc_id_result
+    register: vpc_id
   delegate_to: localhost
 
 - name: Get subnets
