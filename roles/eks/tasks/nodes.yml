@@ -16,31 +16,44 @@
   ignore_errors: true
 
 # - name: Get VPC ID by Name
-#   ansible.builtin.shell:
+#   command:
 #     cmd: >
 #       aws ec2 describe-vpcs --filters "Name=tag:Name,Values={{ vpc_name }}" --query "Vpcs[0].VpcId" --output text
-#     register: vpc_id
+#   register: vpc_id
 #   delegate_to: localhost
+
+# - set_fact:
+#     vpc_id: "{{ vpc_id.stdout }}"
+
+# - name: Get subnets
+#   command:
+#     cmd: >
+#       aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text
+#     register: subnets
+#   delegate_to: localhost
+
+# - set_fact:
+#     subnets: "{{ subnets.stdout }}"
 
 - name: Get VPC ID by Name
   command:
     cmd: >
       aws ec2 describe-vpcs --filters "Name=tag:Name,Values={{ vpc_name }}" --query "Vpcs[0].VpcId" --output text
-  register: vpc_id
+  register: vpc_id_result
   delegate_to: localhost
 
 - set_fact:
-    vpc_id: "{{ vpc_id.stdout }}"
+    vpc_id: "{{ vpc_id_result.stdout }}"
 
 - name: Get subnets
   command:
     cmd: >
       aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text
-    register: subnets
+  register: subnets_result
   delegate_to: localhost
 
 - set_fact:
-    subnets: "{{ subnets.stdout }}"
+    subnets: "{{ subnets_result.stdout }}"
 
 - name: Create EKS Node Group if it doesn't exist
   ansible.builtin.command:
