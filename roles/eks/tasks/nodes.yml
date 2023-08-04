@@ -33,11 +33,14 @@
     vpc_id: "{{ vpc_id.stdout }}"
 
 - name: Get subnets
-  ansible.builtin.command:
+  command:
     cmd: >
       aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text
-    register: subnets_result
+    register: subnets
   delegate_to: localhost
+
+- set_fact:
+    subnets: "{{ subnets.stdout }}"
 
 - name: Create EKS Node Group if it doesn't exist
   ansible.builtin.command:
