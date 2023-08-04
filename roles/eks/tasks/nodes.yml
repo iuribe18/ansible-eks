@@ -55,7 +55,7 @@
       - "30"
       - --subnets
       #- "{{ subnets }}"
-      - - "{{ subnets_list | join(' ') }}"
+      - "subnet-0ce97c74aa1e9737e subnet-096e5435238412b53 subnet-032a4b385cad4d07a subnet-075afc92ddf85e03b"
       - --node-role
       - "arn:aws:iam::348691576534:role/AmazonEKSNodeRole"
       - --instance-types
