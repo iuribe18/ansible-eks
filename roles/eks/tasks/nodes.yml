@@ -42,10 +42,7 @@
 
 - name: Create EKS Node Group if it doesn't exist
   shell: |
-    aws eks create-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}" 
-    --scaling-config minSize=1,maxSize=2,desiredSize=1 
-    --disk-size 30 
-    --subnets {{ subnets }}
+    aws eks create-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}" --scaling-config minSize=1,maxSize=2,desiredSize=1 --disk-size 30 --subnets {{ subnets }}
     --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole 
     --instance-types "{{ instance_type }}" 
     --ami-type "{{ ami }}" 
