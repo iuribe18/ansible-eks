@@ -1,0 +1,16 @@
+---
+- name: Crear una política de IAM en AWS
+  hosts: localhost
+  tasks:
+    - name: Crear o actualizar una política de IAM
+      iam_policy:
+        iam_type: group
+        iam_name: "NombreDelGrupo"
+        policy_name: "NombreDeLaPolitica"
+        policy_document: "{{ lookup('template', 'política.json.j2') }}"
+        state: present
+      register: policy
+
+    - name: Mostrar resultado
+      debug:
+        var: policy

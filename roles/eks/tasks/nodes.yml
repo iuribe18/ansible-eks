@@ -19,7 +19,7 @@
 - name: Get subnets
   command:
     cmd: >
-      aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text
+      aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text | tr '\t' ' '
   register: subnets_result
   delegate_to: localhost
 
@@ -30,7 +30,7 @@
   ansible.builtin.command:
     cmd: >
       aws eks create-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}" --scaling-config minSize=1,maxSize=2,desiredSize=1 
-      --disk-size 30 --subnets "subnet-0ce97c74aa1e9737e subnet-096e5435238412b53 subnet-032a4b385cad4d07a subnet-075afc92ddf85e03b"
+      --disk-size 30 --subnets "{{ subnets }}"
       --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole 
       --instance-types "{{ instance_type }}" --ami-type "{{ ami }}" --remote-access ec2SshKey=santander --capacity-type ON_DEMAND
   delegate_to: localhost
