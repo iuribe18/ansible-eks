@@ -16,12 +16,16 @@
 - set_fact:
     vpc_id: "{{ vpc_id_result.stdout }}"
 
+# - name: Get subnets
+#   command:
+#     cmd: >
+#       aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text | tr '\t' ' '
+#   register: subnets_result
+#   delegate_to: localhost
+
 - name: Get subnets
-  command:
-    cmd: >
-      aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text | tr '\t' ' '
+  shell: "aws ec2 describe-subnets --filters Name=vpc-id,Values={{ vpc_id }} --query 'Subnets[*].SubnetId' --output text | tr '\t' ' '"
   register: subnets_result
-  delegate_to: localhost
 
 - set_fact:
     subnets: "{{ subnets_result.stdout }}"
