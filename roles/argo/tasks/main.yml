@@ -62,5 +62,5 @@
   shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
   register: old_password
 
-- name: Change the ArgoCD admin password
-  shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"
+# - name: Change the ArgoCD admin password
+#   shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"
