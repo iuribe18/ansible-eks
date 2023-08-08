@@ -29,7 +29,7 @@
   environment:
     KUBECONFIG: ~/.kube/config
   become: yes
-  become_user: osboxes
+  #become_user: osboxesroot
 
 - name: Adding addons
   import_tasks: addons.yml

@@ -1,4 +1,4 @@
-# Variables for aks
+# Variables for Networking
 region: us-east-1
 vpc_name: vpc-santander
 subnet_name: public_subnet
