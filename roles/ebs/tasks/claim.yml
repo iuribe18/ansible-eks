@@ -1,10 +1,11 @@
-- name: Crear StorageClass en Kubernetes
+- name: Crear PersistentVolumeClaim en Kubernetes
   kubernetes.core.k8s:
     definition:
       apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
         name: ebs-claim
+        namespace: default
       spec:
         accessModes:
           - ReadWriteOnce
