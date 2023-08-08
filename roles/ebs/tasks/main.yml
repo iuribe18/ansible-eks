@@ -8,7 +8,15 @@
   register: sa_result
   ignore_errors: yes
 
-- name: Verificar error específico
+- name: Verificar Service Account
   fail:
     msg: "El rol ya existe...!!!"
   when: "'EKSEBSCSIDriverRole' in sa_result.stderr"
+
+- name: Instalar el CSI 
+  shell: kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
+  register: apply_result
+
+- name: Mostrar resultados
+  debug:
+    var: apply_result.stdout_lines
