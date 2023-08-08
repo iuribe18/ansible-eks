@@ -1,10 +1,11 @@
-- name: Crear StorageClass en Kubernetes
+- name: Crear Pod con EBS
   kubernetes.core.k8s:
     definition:
       apiVersion: v1
       kind: Pod
       metadata:
         name: app
+        namespace: default
       spec:
         containers:
         - name: app
