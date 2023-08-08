@@ -1,6 +1,6 @@
 ---
-- name: Adding nodes
-  import_tasks: kubeconfig.yml
+# - name: Adding nodes
+#   import_tasks: kubeconfig.yml
 
 - name: Create a k8s namespace
   kubernetes.core.k8s:
