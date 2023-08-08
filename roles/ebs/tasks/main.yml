@@ -1,0 +1,2 @@
+- name: Activar autenticacion oidc con el cluster
+  shell: "eksctl utils associate-iam-oidc-provider --cluster "{{ cluster_name }}" --approve"
