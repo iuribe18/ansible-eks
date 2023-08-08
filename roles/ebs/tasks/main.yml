@@ -21,11 +21,11 @@
   debug:
     var: apply_result.stdout_lines
 
-- name: annotations
-  shell: "kubectl annotate serviceaccount ebs-csi-controller-sa -n kube-system eks.amazonaws.com/role-arn=arn:aws:iam::348691576534:role/EKSEBSCSIDriverRole"
+# - name: annotations
+#   shell: "kubectl annotate serviceaccount ebs-csi-controller-sa -n kube-system eks.amazonaws.com/role-arn=arn:aws:iam::348691576534:role/EKSEBSCSIDriverRole"
 
-- name: delete pods
-  shell: "kubectl delete pods -n kube-system -l=app=ebs-csi-controller"
+# - name: delete pods
+#   shell: "kubectl delete pods -n kube-system -l=app=ebs-csi-controller"
 
 - name: Adding EBS
   import_tasks: storage.yml
