@@ -9,10 +9,12 @@ aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-0003215b3f189b95c --qu
 ouput: subnet-004e8dba617d5cf15        subnet-00471b98a378e3c84        subnet-0f249ae8641d7f55c        subnet-017cd78eba778533d
 aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-0003215b3f189b95c --query 'Subnets[*].SubnetId' --output text | tr '\t' ' '
 output: subnet-004e8dba617d5cf15 subnet-00471b98a378e3c84 subnet-0f249ae8641d7f55c subnet-017cd78eba778533d
+
 ## Crear nodos
 aws eks create-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1 --scaling-config minSize=1,maxSize=2,desiredSize=1 --disk-size 30 --subnets subnet-004e8dba617d5cf15 subnet-00471b98a378e3c84 subnet-0f249ae8641d7f55c subnet-017cd78eba778533d --node-role arn:aws:iam::348691576534:role/AmazonEKSNodeRole --instance-types t3.medium --ami-type AL2_x86_64 --remote-access ec2SshKey=santander --capacity-type ON_DEMAND
 ## Delete nodes
 aws eks delete-nodegroup --cluster-name cluster-santander --nodegroup-name sander-1
+
 ## Create IAM policy
 aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://AWSLoadBalancer.json
 ouput:
