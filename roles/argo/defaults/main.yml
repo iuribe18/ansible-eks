@@ -1,7 +1,7 @@
 # Variables for aks
 resource_group: Santander
 region: us-east-1
-cluster_name: cluster-santander
+cluster_name: santander
 dns_prefix: test-santander
 kubernetes_version: 1.26.0
 
