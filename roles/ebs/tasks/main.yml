@@ -26,3 +26,6 @@
 
 - name: delete pods
   shell: "kubectl delete pods -n kube-system -l=app=ebs-csi-controller"
+
+- name: Adding EBS
+  import_tasks: storage.yml
