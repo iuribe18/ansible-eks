@@ -32,3 +32,6 @@
 
 - name: Adding Claim
   import_tasks: claim.yml
+
+- name: Adding Pod
+  import_tasks: pod.yml
