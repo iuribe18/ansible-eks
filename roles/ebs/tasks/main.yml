@@ -29,3 +29,6 @@
 
 - name: Adding EBS
   import_tasks: storage.yml
+
+- name: Adding Claim
+  import_tasks: claim.yml
