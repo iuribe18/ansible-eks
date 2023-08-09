@@ -37,4 +37,4 @@
 #   shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"
 
 - name: Adding nodes
-  import_tasks: kubeconfig.yml
+  import_tasks: application.yml
