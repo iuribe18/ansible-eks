@@ -16,10 +16,12 @@
   gather_facts: no
   tasks:
       - include_role:
-           name: argo
+           name: ebs
+        tags: ebs
 
 - hosts: localhost
   gather_facts: no
   tasks:
       - include_role:
-           name: ebs
+           name: argo
+        tags: argo

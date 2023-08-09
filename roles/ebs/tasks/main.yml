@@ -1,12 +1,13 @@
 - name: Activar autenticacion OIDC con el cluster
-  shell: "eksctl utils associate-iam-oidc-provider --cluster \"{{ cluster_name }}\" --approve"
+  shell: | 
+    eksctl utils associate-iam-oidc-provider --cluster "{{ cluster_name }}" --approve
 
 - name: Crear cuenta de servicio
   shell: | 
     eksctl create iamserviceaccount --cluster="{{ cluster_name }}" --namespace=kube-system --name=ebs-csi-controller-sa --role-name "EKSEBSCSIDriverRole" \
     --attach-policy-arn=arn:aws:iam::348691576534:policy/AmazonEKS_EBS_CSI_Driver_Policy --approve
   register: sa_result
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Verificar Service Account
   fail:

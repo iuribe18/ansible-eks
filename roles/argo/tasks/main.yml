@@ -1,7 +1,4 @@
 ---
-# - name: Adding nodes
-#   import_tasks: kubeconfig.yml
-
 - name: Create a k8s namespace
   kubernetes.core.k8s:
     name: argocd
@@ -19,32 +16,6 @@
     namespace: argocd
     state: present
     src: /tmp/argocd-install.yaml
-# - name: Cambiar el Servicio argocd-server a LoadBalancer
-#   k8s:
-#     kubeconfig: ~/.kube  # Sustituye esto por la ruta a tu archivo kubeconfig si es necesario
-#     state: present
-#     definition:
-#       apiVersion: v1
-#       kind: Service
-#       metadata:
-#         name: argocd-server
-#         namespace: argocd
-#       spec:
-#         type: LoadBalancer
-
-# - name: Cambiar el Servicio argocd-server a LoadBalancer
-#   community.kubernetes.k8s:
-#     kubeconfig: ~/.kube/config
-#     state: present
-#     definition:
-#       apiVersion: v1
-#       kind: Service
-#       metadata:
-#         name: argocd-server
-#         namespace: argocd
-#       spec:
-#         type: LoadBalancer
-
 - name: Cambiar el Servicio argocd-server a LoadBalancer
   community.kubernetes.k8s:
     kubeconfig: "~/.kube/config"
@@ -64,3 +35,6 @@
 
 # - name: Change the ArgoCD admin password
 #   shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"
+
+- name: Adding nodes
+  import_tasks: kubeconfig.yml
