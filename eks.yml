@@ -12,12 +12,12 @@
            name: eks
         tags: eks
 
-# - hosts: localhost
-#   gather_facts: no
-#   tasks:
-#       - include_role:
-#            name: ebs
-#         tags: ebs
+- hosts: localhost
+  gather_facts: no
+  tasks:
+      - include_role:
+           name: ebs
+        tags: ebs
 
 # - hosts: localhost
 #   gather_facts: no
