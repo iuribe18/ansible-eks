@@ -15,7 +15,7 @@
   command: >
     aws iam create-policy
     --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
-    --policy-document "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.json.j2') }}"
+    --policy-document "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.yml.j2') }}"
   register: policy
   ignore_errors: yes
 
