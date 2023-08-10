@@ -1,0 +1,41 @@
+# ---
+# - name: Eliminar recursos
+#   hosts: localhost
+#   tasks:
+#     - name: Eliminar anotación del ServiceAccount
+#       command:
+#         cmd: kubectl annotate serviceaccount ebs-csi-controller-sa -n kube-system eks.amazonaws.com/role-arn-
+#       delegate_to: localhost
+
+#     - name: Eliminar addon coredns
+#       command:
+#         cmd: aws eks delete-addon --cluster-name "{{ cluster_name }}" --addon-name coredns
+#       delegate_to: localhost
+
+#     - name: Eliminar política IAM
+#       command:
+#         cmd: aws iam delete-policy --policy-arn arn:aws:iam::{{ your_account_id }}:policy/AmazonEKS_EBS_CSI_Driver_Policy
+#       delegate_to: localhost
+
+#     - name: Eliminar el rol de servicio
+#       command:
+#         cmd: eksctl delete iamserviceaccount --name ebs-csi-controller-sa --namespace kube-system --cluster "{{ cluster_name }}" --role-name AmazonEKS_EBS_CSI_DriverRole
+#       delegate_to: localhost
+---
+- name: Eliminar recursos de AWS
+  hosts: localhost
+  tasks:
+    - name: Drenar y eliminar nodos (esto puede requerir lógica adicional)
+      command:
+        cmd: "aws eks delete-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name {{ node_group }}"
+      delegate_to: localhost
+
+    - name: Eliminar el clúster de EKS
+      command:
+        cmd: "aws eks delete-cluster --name {{ cluster_name }}"
+      delegate_to: localhost
+
+    - name: Eliminar la VPC
+      command:
+        cmd: "aws ec2 delete-vpc --vpc-id {{ vpc_id }}"
+      delegate_to: localhost

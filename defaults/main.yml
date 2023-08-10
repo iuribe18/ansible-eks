@@ -3,6 +3,10 @@
 location_bak: eastus
 enable_rbac_bak: true
 
+cluster_name: santander
+dns_prefix: test-santander
+node_group: sander-1
+
 # linux profile
 admin_username_bak: azureuser
 # ssh_key_bak: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
