@@ -29,10 +29,10 @@
     #   delay: 60
     #   delegate_to: localhost
 
-    - name: Eliminar el clúster de EKS
-      command:
-        cmd: aws eks delete-cluster --name "{{ cluster_name }}"
-      delegate_to: localhost
+    # - name: Eliminar el clúster de EKS
+    #   command:
+    #     cmd: aws eks delete-cluster --name "{{ cluster_name }}"
+    #   delegate_to: localhost
 
     - name: Get VPC ID by Name
       command:
