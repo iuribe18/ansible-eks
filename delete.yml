@@ -20,14 +20,14 @@
       #when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr"
       when: nodegroup_check.rc == 0
 
-    - name: Esperar a que el nodegroup sea eliminado
-      command:
-        cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
-      register: nodegroup_status
-      until: "'DOES_NOT_EXIST' in nodegroup_status.stderr"
-      retries: 10
-      delay: 60
-      delegate_to: localhost
+    # - name: Esperar a que el nodegroup sea eliminado
+    #   command:
+    #     cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
+    #   register: nodegroup_status
+    #   until: "'DOES_NOT_EXIST' in nodegroup_status.stderr"
+    #   retries: 10
+    #   delay: 60
+    #   delegate_to: localhost
 
     - name: Eliminar el clúster de EKS
       command:
