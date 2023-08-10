@@ -27,7 +27,7 @@
   tasks:
     - name: Incluir variables
       include_vars: defaults/main.yml
-      
+
     - name: Eliminar nodos
       command:
         cmd: aws eks delete-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
@@ -37,6 +37,15 @@
       command:
         cmd: aws eks delete-cluster --name "{{ cluster_name }}"
       delegate_to: localhost
+
+    - name: Get VPC ID by Name
+      command:
+        cmd: aws ec2 describe-vpcs --filters "Name=tag:Name,Values={{ vpc_name }}" --query "Vpcs[0].VpcId" --output text
+      register: vpc_id_result
+      delegate_to: localhost
+
+    - set_fact:
+        vpc_id: "{{ vpc_id_result.stdout }}"
 
     - name: Eliminar la VPC
       command:
