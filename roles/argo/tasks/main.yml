@@ -41,17 +41,27 @@
     repo: 'https://git.solem.cl/infra/argocd'  # URL del repositorio
     dest: '/tmp'
 
-- name: Clonar el repositorio de Git
+# - name: Clonar el repositorio de Git
+#   git:
+#     repo: 'git@git.solem.cl:infra/argocd.git'
+#     dest: '/tmp'
+#     version: 'master'
+#     accept_hostkey: yes
+#     depth: 1
+#   environment:
+#     GIT_ASKPASS: "/bin/echo"
+#     GIT_USERNAME: "ivan.uribe"
+#     GIT_PASSWORD: "glpat-SYs7vCNWR221r_7uVRUP"
+
+- name: Clonar repositorio desde AWS CodeCommit usando SSH
   git:
-    repo: 'git@git.solem.cl:infra/argocd.git'
+    repo: 'ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/ginko'
     dest: '/tmp'
-    version: 'master'
-    accept_hostkey: yes
-    depth: 1
+    version: master
+    key_file: '~/.ssh/id_rsa'
   environment:
-    GIT_ASKPASS: "/bin/echo"
-    GIT_USERNAME: "ivan.uribe"
-    GIT_PASSWORD: "glpat-SYs7vCNWR221r_7uVRUP"
+    AWS_DEFAULT_REGION: 'us-east-1'
+
 
 - name: Aplicar dss-application.yaml con kubectl
   command:
