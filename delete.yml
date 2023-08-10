@@ -27,12 +27,12 @@
   tasks:
     - name: Drenar y eliminar nodos (esto puede requerir lógica adicional)
       command:
-        cmd: "aws eks delete-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name {{ node_group }}"
+        cmd: aws eks delete-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
       delegate_to: localhost
 
     - name: Eliminar el clúster de EKS
       command:
-        cmd: "aws eks delete-cluster --name {{ cluster_name }}"
+        cmd: aws eks delete-cluster --name "{{ cluster_name }}"
       delegate_to: localhost
 
     - name: Eliminar la VPC
