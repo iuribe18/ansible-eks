@@ -36,22 +36,10 @@
 # - name: Change the ArgoCD admin password
 #   shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"
 
-# - name: Clonar el repositorio de Git
-#   git:
-#     repo: 'https://git.solem.cl/infra/argocd'  # URL del repositorio
-#     dest: '/tmp'
-
-# - name: Clonar el repositorio de Git
-#   git:
-#     repo: 'git@git.solem.cl:infra/argocd.git'
-#     dest: '/tmp'
-#     version: 'master'
-#     accept_hostkey: yes
-#     depth: 1
-#   environment:
-#     GIT_ASKPASS: "/bin/echo"
-#     GIT_USERNAME: "ivan.uribe"
-#     GIT_PASSWORD: "glpat-SYs7vCNWR221r_7uVRUP"
+- name: Asegurarse de que el directorio /tmp/ginko no existe
+  file:
+    path: /tmp/ginko
+    state: absent
 
 - name: Clonar repositorio desde AWS CodeCommit usando SSH
   git:
@@ -64,5 +52,5 @@
 
 - name: Aplicar dss-application.yaml con kubectl
   command:
-    cmd: kubectl apply -f /tmp/santander/ginko/dss-application.yaml
-  delegate_to: localhost  # Ejecuta el comando en la máquina local
+    cmd: kubectl apply -f /tmp/santander/dss-application.yaml
+  delegate_to: localhost
