@@ -11,14 +11,6 @@
 #     state: present
 #   register: policy
 
-- name: Crear o actualizar una política de IAM
-  command: >
-    aws iam create-policy
-    --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
-    --policy-document "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.yml.j2') }}"
-  register: policy
-  ignore_errors: yes
-
 - name: Generate IAM policy document
   template:
     src: AmazonEKS_EBS_CSI_Driver_Policy.yml.j2
@@ -30,6 +22,11 @@
     --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
     --policy-document file:///tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
   register: policy
+
+- name: Remove temporary IAM policy document
+  file:
+    path: /tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
+    state: absent
 
 - name: Mostrar resultado
   debug:
@@ -45,8 +42,8 @@
 
 - name: Crear cuenta de servicio
   shell: | 
-    "eksctl create iamserviceaccount --name ebs-csi-controller-sa --namespace kube-system --cluster "{{ cluster_name }}" \
-    --role-name AmazonEKS_EBS_CSI_DriverRole --role-only --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy --approve"
+    eksctl create iamserviceaccount --name ebs-csi-controller-sa --namespace kube-system --cluster "{{ cluster_name }}" \
+    --role-name AmazonEKS_EBS_CSI_DriverRole --role-only --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy --approve
   register: sa_result
   ignore_errors: true
 
