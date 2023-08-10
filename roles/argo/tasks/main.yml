@@ -36,10 +36,10 @@
 # - name: Change the ArgoCD admin password
 #   shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"
 
-- name: Clonar el repositorio de Git
-  git:
-    repo: 'https://git.solem.cl/infra/argocd'  # URL del repositorio
-    dest: '/tmp'
+# - name: Clonar el repositorio de Git
+#   git:
+#     repo: 'https://git.solem.cl/infra/argocd'  # URL del repositorio
+#     dest: '/tmp'
 
 # - name: Clonar el repositorio de Git
 #   git:
