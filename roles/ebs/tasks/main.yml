@@ -19,6 +19,18 @@
   register: policy
   ignore_errors: yes
 
+- name: Generate IAM policy document
+  template:
+    src: AmazonEKS_EBS_CSI_Driver_Policy.yml.j2
+    dest: /tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
+
+- name: Crear o actualizar una política de IAM
+  command: >
+    aws iam create-policy
+    --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
+    --policy-document file:///tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
+  register: policy
+
 - name: Mostrar resultado
   debug:
     var: policy
