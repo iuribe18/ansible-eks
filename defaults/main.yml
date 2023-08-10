@@ -2,6 +2,7 @@
 # defaults variables for AWS EKS
 cluster_name: santander
 node_group: sander-1
+vpc_name: vpc-santander
 
 # linux profile
 admin_username_bak: azureuser
