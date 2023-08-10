@@ -25,7 +25,10 @@
 - name: Eliminar recursos de AWS
   hosts: localhost
   tasks:
-    - name: Drenar y eliminar nodos (esto puede requerir lógica adicional)
+    - name: Incluir variables
+      include_vars: defaults/main.yml
+      
+    - name: Eliminar nodos
       command:
         cmd: aws eks delete-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
       delegate_to: localhost

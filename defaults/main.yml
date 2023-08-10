@@ -1,10 +1,6 @@
 ---
-# defaults file for aks
-location_bak: eastus
-enable_rbac_bak: true
-
+# defaults variables for AWS EKS
 cluster_name: santander
-dns_prefix: test-santander
 node_group: sander-1
 
 # linux profile
