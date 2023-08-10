@@ -1,8 +1,22 @@
+# - name: Create CoreDNS addon
+#   ansible.builtin.command:
+#     cmd: aws eks create-addon --cluster-name "{{ cluster_name }}" --addon-name coredns --addon-version v1.10.1-eksbuild.1
+#   delegate_to: localhost
+#   ignore_errors: true
+
 - name: Create CoreDNS addon
   ansible.builtin.command:
     cmd: aws eks create-addon --cluster-name "{{ cluster_name }}" --addon-name coredns --addon-version v1.10.1-eksbuild.1
+  register: addon_result
   delegate_to: localhost
   ignore_errors: true
+  failed_when: "'Addon already exists' not in addon_result.stderr and addon_result.rc != 0"
+
+- name: Check if CoreDNS addon already exists
+  debug:
+    msg: "El addon ya existe."
+  when: "'Addon already exists' in addon_result.stderr"
+
 
 - name: Create kube-proxy addon
   ansible.builtin.command:
