@@ -5,19 +5,27 @@
     - name: Incluir variables
       include_vars: defaults/main.yml
 
+    - name: Verificar si el nodegroup existe
+      command:
+        cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
+      register: nodegroup_check
+      delegate_to: localhost
+      failed_when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr and nodegroup_check.rc != 0"
+  
     - name: Eliminar nodos
       command:
         cmd: aws eks delete-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
       delegate_to: localhost
+      when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr"
 
-    - name: Esperar a que el nodegroup sea eliminado
-      command:
-        cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
-      register: nodegroup_status
-      until: "'DOES_NOT_EXIST' in nodegroup_status.stderr"
-      retries: 10
-      delay: 60
-      delegate_to: localhost
+    # - name: Esperar a que el nodegroup sea eliminado
+    #   command:
+    #     cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
+    #   register: nodegroup_status
+    #   until: "'DOES_NOT_EXIST' in nodegroup_status.stderr"
+    #   retries: 10
+    #   delay: 60
+    #   delegate_to: localhost
 
     - name: Eliminar el clúster de EKS
       command:
