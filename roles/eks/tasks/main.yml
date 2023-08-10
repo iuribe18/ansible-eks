@@ -18,22 +18,19 @@
     msg: "Estado del cluster: Creando"
   delegate_to: localhost
 
-- name: Wait for EKS cluster to be active
-  block:
-    - name: Check EKS cluster status
-      ansible.builtin.command: >
-        aws eks describe-cluster --name "{{ cluster_name }}" --query "cluster.status" --output text
-      register: cluster_state
-      delegate_to: localhost
-
-    - name: Display current cluster status
-      debug:
-        msg: "Current cluster state: {{ cluster_state.stdout }}"
-      when: cluster_state.stdout != 'ACTIVE'
-      delegate_to: localhost
+- name: Check EKS cluster status
+  ansible.builtin.command: >
+    aws eks describe-cluster --name "{{ cluster_name }}" --query "cluster.status" --output text
+  register: cluster_state
   until: cluster_state.stdout == 'ACTIVE'
   retries: 60
   delay: 30
+  delegate_to: localhost
+
+- name: Display final cluster status
+  debug:
+    msg: "Final cluster state: {{ cluster_state.stdout }}"
+  delegate_to: localhost
 
 # - name: Wait for EKS cluster to be active
 #   ansible.builtin.command: >
