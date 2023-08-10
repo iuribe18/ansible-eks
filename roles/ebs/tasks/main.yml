@@ -1,11 +1,32 @@
+# - name: Descargar example-iam-policy.json
+#   get_url:
+#     url: "https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/v0.9.0/docs/example-iam-policy.json"
+#     dest: "/root/example-iam-policy.json"
+#     mode: '0644' # Permisos para el archivo descargado
+
+- name: Crear o actualizar una política de IAM
+  iam_policy:
+    policy_name: "AmazonEKS_EBS_CSI_Driver_Policy"
+    policy_document: "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.json.j2') }}"
+    state: present
+  register: policy
+
+- name: Mostrar resultado
+  debug:
+    var: policy
+
+# - name: Crear IAM policy AmazonEKS_EBS_CSI_Driver
+#   shell: | 
+#     aws iam create-policy --policy-name AmazonEKS_EBS_CSI_Driver_Policy --policy-document file://example-iam-policy.json
+
 - name: Activar autenticacion OIDC con el cluster
   shell: | 
     eksctl utils associate-iam-oidc-provider --cluster "{{ cluster_name }}" --approve
 
 - name: Crear cuenta de servicio
   shell: | 
-    eksctl create iamserviceaccount --cluster="{{ cluster_name }}" --namespace=kube-system --name=ebs-csi-controller-sa --role-name "EKSEBSCSIDriverRole" \
-    --attach-policy-arn=arn:aws:iam::348691576534:policy/AmazonEKS_EBS_CSI_Driver_Policy --approve
+    "eksctl create iamserviceaccount --name ebs-csi-controller-sa --namespace kube-system --cluster "{{ cluster_name }}" \
+    --role-name AmazonEKS_EBS_CSI_DriverRole --role-only --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy --approve"
   register: sa_result
   ignore_errors: true
 
