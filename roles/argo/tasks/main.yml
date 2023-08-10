@@ -56,14 +56,13 @@
 - name: Clonar repositorio desde AWS CodeCommit usando SSH
   git:
     repo: 'ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/ginko'
-    dest: '/tmp'
+    dest: '/tmp/santander'
     version: master
     key_file: '~/.ssh/id_rsa'
   environment:
     AWS_DEFAULT_REGION: 'us-east-1'
 
-
 - name: Aplicar dss-application.yaml con kubectl
   command:
-    cmd: kubectl apply -f /tmp/argocd/dss-application.yaml
+    cmd: kubectl apply -f /tmp/santander/ginko/dss-application.yaml
   delegate_to: localhost  # Ejecuta el comando en la máquina local
