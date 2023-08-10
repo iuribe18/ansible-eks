@@ -7,7 +7,7 @@
 - name: Crear o actualizar una política de IAM
   iam_policy:
     policy_name: "AmazonEKS_EBS_CSI_Driver_Policy"
-    policy_document: "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.json.j2') }}"
+    policy_document: "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.yml.j2') }}"
     state: present
   register: policy
 
