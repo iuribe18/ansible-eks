@@ -10,13 +10,15 @@
         cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
       register: nodegroup_check
       delegate_to: localhost
-      failed_when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr and nodegroup_check.rc != 0"
+      #failed_when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr and nodegroup_check.rc != 0"
+      ignore_errors: true
   
     - name: Eliminar nodos
       command:
         cmd: aws eks delete-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
       delegate_to: localhost
-      when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr"
+      #when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr"
+      when: nodegroup_check.rc == 0
 
     # - name: Esperar a que el nodegroup sea eliminado
     #   command:
