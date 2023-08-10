@@ -19,9 +19,9 @@
            name: ebs
         tags: ebs
 
-# - hosts: localhost
-#   gather_facts: no
-#   tasks:
-#       - include_role:
-#            name: argo
-#         tags: argo
+- hosts: localhost
+  gather_facts: no
+  tasks:
+      - include_role:
+           name: argo
+        tags: argo
