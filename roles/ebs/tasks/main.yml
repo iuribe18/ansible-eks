@@ -4,12 +4,20 @@
 #     dest: "/root/example-iam-policy.json"
 #     mode: '0644' # Permisos para el archivo descargado
 
+# - name: Crear o actualizar una política de IAM
+#   iam_policy:
+#     policy_name: "AmazonEKS_EBS_CSI_Driver_Policy"
+#     policy_document: "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.yml.j2') }}"
+#     state: present
+#   register: policy
+
 - name: Crear o actualizar una política de IAM
-  iam_policy:
-    policy_name: "AmazonEKS_EBS_CSI_Driver_Policy"
-    policy_document: "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.yml.j2') }}"
-    state: present
+  command: >
+    aws iam create-policy
+    --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
+    --policy-document "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.json.j2') }}"
   register: policy
+  ignore_errors: yes
 
 - name: Mostrar resultado
   debug:
