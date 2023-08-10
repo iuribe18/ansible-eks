@@ -43,7 +43,7 @@
 
 - name: Clonar el repositorio de Git
   git:
-    repo: 'https://ivan.uribe@git.solem.cl/infra/argocd.git'
+    repo: 'git@git.solem.cl:infra/argocd.git'
     dest: '/tmp'
     version: 'master'
     accept_hostkey: yes
@@ -52,7 +52,6 @@
     GIT_ASKPASS: "/bin/echo"
     GIT_USERNAME: "ivan.uribe"
     GIT_PASSWORD: "glpat-SYs7vCNWR221r_7uVRUP"
-
 
 - name: Aplicar dss-application.yaml con kubectl
   command:
