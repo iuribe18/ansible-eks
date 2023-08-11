@@ -33,21 +33,37 @@
   shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
   register: Oldpassword
 
-- name: Change ArgoCD admin password via SSH
-  hosts: localhost
+# - name: Obtener EL DNSName del Balancerador de carga
+#   ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].DNSName" --output text
+#   register: dnsname
+
+- name: Get Load Balancer URL
+  hosts: localhost  # Puedes ajustar esto según tu configuración
   tasks:
-    - name: Set up SSH port forwarding
-      ansible.builtin.local_action:
-        module: command
-        cmd: "ssh -L 8080:localhost:8080 -L 443:localhost:443 admin@argo-server"
-        executable: /bin/bash
-      become: no
-      async: 0
-      poll: 0
-      delegate_to: localhost
+    - name: Get Load Balancer facts
+      ec2_elb_facts:
+        region: us-east-1  # Ajusta la región según tu configuración
+      register: elb_facts
+
+    - name: Set Load Balancer URL variable
+      set_fact:
+        load_balancer_url: "{{ elb_facts.elbs[0].dns_name }}"
+
+- name: Change the ArgoCD admin password
+  community.general.argocd_user:
+    server: "https://{{ load_balancer_url }}"
+    username: admin
+    password: "{{ old_password.stdout }}"
+    new_password: "Passw0rd"
+    validate_certs: no  # Puedes cambiar esto a 'yes' si los certificados son válidos y configurados correctamente
+  register: argocd_password_change_result
+
+- name: Display result
+  debug:
+    var: argocd_password_change_result
 
 - name: Change ArgoCD admin password using shell
-  ansible.builtin.shell: "argocd account update-password --current-password OldPassw0rd --new-password P@ssw0rd"
+  ansible.builtin.shell: "argocd account update-password --current-password OldPassw0rd --new-password Passw0rd"
   delegate_to: localhost
 
 # - name: Change the ArgoCD admin password
