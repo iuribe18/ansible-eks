@@ -60,9 +60,9 @@
 #   debug:
 #     var: argocd_password_change_result
 
-- name: Change ArgoCD admin password using shell
-  ansible.builtin.shell: "argocd account update-password --current-password OldPassw0rd --new-password Passw0rd --server https://{{ dnsname }}"
-  delegate_to: localhost
+# - name: Change ArgoCD admin password using shell
+#   ansible.builtin.shell: "argocd account update-password --current-password OldPassw0rd --new-password Passw0rd --server https://{{ dnsname }}"
+#   delegate_to: localhost
 
 # - name: Change the ArgoCD admin password
 #   shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"

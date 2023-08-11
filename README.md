@@ -10,7 +10,7 @@ Tener instalado previamente los siguientes paquetes:
 * Ansible 2.9
     * $ ansible-galaxy collection install azure.azcollection
     * $ ansible-galaxy collection install kubernetes.core
-* AWS CLI
+* Claves de Acceso AWS CLI
 * AWS credentials
 
 ## Modo de ejecución
