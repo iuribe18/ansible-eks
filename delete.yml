@@ -33,6 +33,9 @@
         cmd: aws eks delete-cluster --name "{{ cluster_name }}"
       delegate_to: localhost
 
+    - name: Wait for classic load balancers to be deleted
+      pause: seconds=120
+
     - name: Obtener nombres de balanceadores de carga clásicos
       ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].LoadBalancerName" --output text
       register: classic_lb_names_result
@@ -46,6 +49,10 @@
         aws elb delete-load-balancer
         --load-balancer-name "{{ item }}"
       loop: "{{ classic_lb_names }}"
+
+    - name: Wait for classic load balancers to be deleted
+      pause: seconds=60
+      when: classic_lb_names_result.stdout_lines | length > 0
 
     - name: Get VPC ID by Name
       command:
