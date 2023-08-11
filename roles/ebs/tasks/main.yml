@@ -18,11 +18,11 @@
 #   register: policy_creation
 #   when: policy_check.failed
 
-- name: Verificar si la política existe
-  command: >
-    aws iam get-policy --policy-arn arn:aws:iam::{{ aws_account_id }}:policy/AmazonEKS_EBS_CSI_Driver_Policy
-  register: policy_check
-  failed_when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
+# - name: Verificar si la política existe
+#   command: >
+#     aws iam get-policy --policy-arn arn:aws:iam::{{ aws_account_id }}:policy/AmazonEKS_EBS_CSI_Driver_Policy
+#   register: policy_check
+#   failed_when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
 
 - name: Generate IAM policy document
   template:
