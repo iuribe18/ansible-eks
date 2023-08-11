@@ -34,7 +34,7 @@
   shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
   register: Oldpassword
 
-- name: Obtener EL DNSName del Balancerador de carga
+- name: Obtener el DNSName del Balancerador de carga
   ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].DNSName" --output text
   register: dnsname
 
@@ -47,21 +47,21 @@
 #   set_fact:
 #     load_balancer_url: "{{ elb_facts.elbs[0].dns_name }}"
 
-- name: Change the ArgoCD admin password
-  community.general.argocd_user:
-    server: "https://{{ dnsname }}"
-    username: admin
-    password: "{{ old_password.stdout }}"
-    new_password: "Passw0rd"
-    validate_certs: no  # Puedes cambiar esto a 'yes' si los certificados son válidos y configurados correctamente
-  register: argocd_password_change_result
+# - name: Change the ArgoCD admin password
+#   community.general.argocd_user:
+#     server: "https://{{ dnsname }}"
+#     username: admin
+#     password: "{{ old_password.stdout }}"
+#     new_password: "Passw0rd"
+#     validate_certs: no  # Puedes cambiar esto a 'yes' si los certificados son válidos y configurados correctamente
+#   register: argocd_password_change_result
 
-- name: Display result
-  debug:
-    var: argocd_password_change_result
+# - name: Display result
+#   debug:
+#     var: argocd_password_change_result
 
 - name: Change ArgoCD admin password using shell
-  ansible.builtin.shell: "argocd account update-password --current-password OldPassw0rd --new-password Passw0rd"
+  ansible.builtin.shell: "argocd account update-password --current-password OldPassw0rd --new-password Passw0rd --server"
   delegate_to: localhost
 
 # - name: Change the ArgoCD admin password
