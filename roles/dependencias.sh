@@ -18,5 +18,11 @@ if ! command -v ansible &> /dev/null; then
     exit 1
 fi
 
+# Verificación de awscli
+if ! command -v awscli &> /dev/null; then
+    echo "eksctl no está instalado. Por favor, sigue las instrucciones para instalarlo."
+    exit 1
+fi
+
 # Verificación de otras herramientas y dependencias aquí...
 echo "Todas las dependencias están instaladas correctamente. Puedes ejecutar el playbook."
