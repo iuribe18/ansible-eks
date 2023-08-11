@@ -23,8 +23,8 @@
     aws eks describe-cluster --name "{{ cluster_name }}" --query "cluster.status" --output text
   register: cluster_state
   until: cluster_state.stdout == 'ACTIVE'
-  retries: 60
-  delay: 30
+  retries: 15
+  delay: 60
   delegate_to: localhost
 
 - name: Display final cluster status

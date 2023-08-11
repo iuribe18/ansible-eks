@@ -1,22 +1,41 @@
+# - name: Verificar si la política ya existe
+#   command: >
+#     aws iam get-policy --policy-arn arn:aws:iam::{{ aws_account_id }}:policy/AmazonEKS_EBS_CSI_Driver_Policy
+#   register: policy_check
+#   failed_when: "'NoSuchEntity' not in policy_check.stderr and policy_check.rc != 0"
+
+# - name: Generate IAM policy document
+#   template:
+#     src: AmazonEKS_EBS_CSI_Driver_Policy.yml.j2
+#     dest: /tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
+#   when: policy_check.failed
+
+# - name: Crear o actualizar una política de IAM
+#   command: >
+#     aws iam create-policy
+#     --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
+#     --policy-document file://tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
+#   register: policy_creation
+#   when: policy_check.failed
+
 - name: Verificar si la política ya existe
   command: >
     aws iam get-policy --policy-arn arn:aws:iam::{{ aws_account_id }}:policy/AmazonEKS_EBS_CSI_Driver_Policy
   register: policy_check
-  failed_when: "'NoSuchEntity' not in policy_check.stderr and policy_check.rc != 0"
+  failed_when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
 
 - name: Generate IAM policy document
   template:
     src: AmazonEKS_EBS_CSI_Driver_Policy.yml.j2
     dest: /tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
-  when: policy_check.failed
+  when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
 
 - name: Crear o actualizar una política de IAM
   command: >
     aws iam create-policy
     --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
     --policy-document file://tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
-  register: policy_creation
-  when: policy_check.failed
+  when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
 
 - name: Debug policy creation result
   debug:
