@@ -31,8 +31,13 @@
         cmd: aws eks delete-cluster --name "{{ cluster_name }}"
       delegate_to: localhost
 
-    - name: Wait for classic load balancers to be deleted
-      pause: seconds=120
+    - name: Esperar a que el clúster sea eliminado
+      command:
+        cmd: aws eks wait cluster-deleted --name "{{ cluster_name }}"
+      delegate_to: localhost
+      retries: 10
+      delay: 60
+      ignore_errors: true
 
     - name: Obtener nombres de balanceadores de carga clásicos
       ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].LoadBalancerName" --output text
