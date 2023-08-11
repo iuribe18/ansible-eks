@@ -3,6 +3,7 @@
 cluster_name: santander
 node_group: sander-1
 vpc_name: vpc-santander
+stack_name: eksctl-santander-addon-iamserviceaccount-kube-system-ebs-csi-controller-sa
 
 # linux profile
 admin_username_bak: azureuser

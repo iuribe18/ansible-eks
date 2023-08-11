@@ -32,12 +32,6 @@
         state: absent
       register: delete_role_result
 
-    - name: Eliminar política adjunta al rol
-      iam_policy:
-        name: AmazonEKS_EBS_CSI_Driver_Policy
-        state: absent
-      register: delete_policy_result
-
     - name: Eliminar el stack de CloudFormation
       command: aws cloudformation delete-stack --stack-name {{ stack_name }}
       delegate_to: localhost
