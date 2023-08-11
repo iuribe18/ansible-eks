@@ -34,22 +34,22 @@
   shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
   register: Oldpassword
 
-# - name: Obtener EL DNSName del Balancerador de carga
-#   ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].DNSName" --output text
-#   register: dnsname
+- name: Obtener EL DNSName del Balancerador de carga
+  ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].DNSName" --output text
+  register: dnsname
 
-- name: Get Load Balancer facts
-  ec2_elb_facts:
-    region: us-east-1
-  register: elb_facts
+# - name: Get Load Balancer facts
+#   ec2_elb_facts:
+#     region: us-east-1
+#   register: elb_facts
 
-- name: Set Load Balancer URL variable
-  set_fact:
-    load_balancer_url: "{{ elb_facts.elbs[0].dns_name }}"
+# - name: Set Load Balancer URL variable
+#   set_fact:
+#     load_balancer_url: "{{ elb_facts.elbs[0].dns_name }}"
 
 - name: Change the ArgoCD admin password
   community.general.argocd_user:
-    server: "https://{{ load_balancer_url }}"
+    server: "https://{{ dnsname }}"
     username: admin
     password: "{{ old_password.stdout }}"
     new_password: "Passw0rd"
