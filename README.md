@@ -12,6 +12,7 @@ Tener instalado previamente los siguientes paquetes:
     * $ ansible-galaxy collection install kubernetes.core
 * Claves de Acceso AWS CLI
 * AWS credentials
+* eksctl - The official CLI for Amazon EKS
 
 ## Modo de ejecución
 ansible-playbook aks.yml -v
