@@ -27,11 +27,28 @@
         name: argocd-server
         namespace: argocd
       spec:
-        type: LoadBalancer
+        type: NodePort
 
 - name: Get the current ArgoCD admin password
   shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
-  register: old_password
+  register: Oldpassword
+
+- name: Change ArgoCD admin password via SSH
+  hosts: localhost
+  tasks:
+    - name: Set up SSH port forwarding
+      ansible.builtin.local_action:
+        module: command
+        cmd: "ssh -L 8080:localhost:8080 -L 443:localhost:443 admin@argo-server"
+        executable: /bin/bash
+      become: no
+      async: 0
+      poll: 0
+      delegate_to: localhost
+
+- name: Change ArgoCD admin password using shell
+  ansible.builtin.shell: "argocd account update-password --current-password OldPassw0rd --new-password P@ssw0rd"
+  delegate_to: localhost
 
 # - name: Change the ArgoCD admin password
 #   shell: "argocd account update-password --current-password {{ old_password.stdout }} --new-password Passw0rd"

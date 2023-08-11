@@ -10,7 +10,6 @@
         cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
       register: nodegroup_check
       delegate_to: localhost
-      #failed_when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr and nodegroup_check.rc != 0"
       ignore_errors: true
   
     - name: Eliminar nodos
@@ -20,19 +19,33 @@
       #when: "'DOES_NOT_EXIST' not in nodegroup_check.stderr"
       when: nodegroup_check.rc == 0
 
-    # - name: Esperar a que el nodegroup sea eliminado
-    #   command:
-    #     cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
-    #   register: nodegroup_status
-    #   until: "'DOES_NOT_EXIST' in nodegroup_status.stderr"
-    #   retries: 10
-    #   delay: 60
-    #   delegate_to: localhost
+    - name: Esperar a que el nodegroup sea eliminado
+      command:
+        cmd: aws eks describe-nodegroup --cluster-name "{{ cluster_name }}" --nodegroup-name "{{ node_group }}"
+      register: nodegroup_status
+      until: "'DOES_NOT_EXIST' in nodegroup_status.stderr"
+      retries: 10
+      delay: 60
+      delegate_to: localhost
 
     - name: Eliminar el clúster de EKS
       command:
         cmd: aws eks delete-cluster --name "{{ cluster_name }}"
       delegate_to: localhost
+
+    - name: Obtener nombres de balanceadores de carga clásicos
+      ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].LoadBalancerName" --output text
+      register: classic_lb_names_result
+    
+    - name: Set fact with classic LB names
+      set_fact:
+        classic_lb_names: "{{ classic_lb_names_result.stdout_lines | map('trim') | list }}"
+
+    - name: Eliminar balanceadores de carga clásicos
+      ansible.builtin.command: >
+        aws elb delete-load-balancer
+        --load-balancer-name "{{ item }}"
+      loop: "{{ classic_lb_names }}"
 
     - name: Get VPC ID by Name
       command:
