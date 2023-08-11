@@ -28,7 +28,7 @@
   template:
     src: AmazonEKS_EBS_CSI_Driver_Policy.yml.j2
     dest: /tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
-  when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
+  #when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
 
 - name: Crear o actualizar una política de IAM
   command: >
