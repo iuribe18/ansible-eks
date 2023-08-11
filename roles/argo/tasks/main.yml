@@ -16,6 +16,7 @@
     namespace: argocd
     state: present
     src: /tmp/argocd-install.yaml
+
 - name: Cambiar el Servicio argocd-server a LoadBalancer
   community.kubernetes.k8s:
     kubeconfig: "~/.kube/config"
@@ -27,7 +28,7 @@
         name: argocd-server
         namespace: argocd
       spec:
-        type: NodePort
+        type: LoadBalancer
 
 - name: Get the current ArgoCD admin password
   shell: "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath=\"{.data.password}\" | base64 -d"
@@ -37,17 +38,14 @@
 #   ansible.builtin.command: aws elb describe-load-balancers --query "LoadBalancerDescriptions[].DNSName" --output text
 #   register: dnsname
 
-- name: Get Load Balancer URL
-  hosts: localhost  # Puedes ajustar esto según tu configuración
-  tasks:
-    - name: Get Load Balancer facts
-      ec2_elb_facts:
-        region: us-east-1  # Ajusta la región según tu configuración
-      register: elb_facts
+- name: Get Load Balancer facts
+  ec2_elb_facts:
+    region: us-east-1
+  register: elb_facts
 
-    - name: Set Load Balancer URL variable
-      set_fact:
-        load_balancer_url: "{{ elb_facts.elbs[0].dns_name }}"
+- name: Set Load Balancer URL variable
+  set_fact:
+    load_balancer_url: "{{ elb_facts.elbs[0].dns_name }}"
 
 - name: Change the ArgoCD admin password
   community.general.argocd_user:

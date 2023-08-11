@@ -1,16 +1,3 @@
-# - name: Descargar example-iam-policy.json
-#   get_url:
-#     url: "https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/v0.9.0/docs/example-iam-policy.json"
-#     dest: "/root/example-iam-policy.json"
-#     mode: '0644' # Permisos para el archivo descargado
-
-# - name: Crear o actualizar una política de IAM
-#   iam_policy:
-#     policy_name: "AmazonEKS_EBS_CSI_Driver_Policy"
-#     policy_document: "{{ lookup('template', 'AmazonEKS_EBS_CSI_Driver_Policy.yml.j2') }}"
-#     state: present
-#   register: policy
-
 - name: Verificar si la política ya existe
   command: >
     aws iam get-policy --policy-arn arn:aws:iam::{{ aws_account_id }}:policy/AmazonEKS_EBS_CSI_Driver_Policy
@@ -27,7 +14,7 @@
   command: >
     aws iam create-policy
     --policy-name "AmazonEKS_EBS_CSI_Driver_Policy"
-    --policy-document file:///tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
+    --policy-document file://tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
   register: policy_creation
   when: policy_check.failed
 
@@ -44,10 +31,6 @@
 - name: Mostrar resultado
   debug:
     var: policy
-
-# - name: Crear IAM policy AmazonEKS_EBS_CSI_Driver
-#   shell: | 
-#     aws iam create-policy --policy-name AmazonEKS_EBS_CSI_Driver_Policy --policy-document file://example-iam-policy.json
 
 - name: Activar autenticacion OIDC con el cluster
   shell: | 
