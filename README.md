@@ -20,5 +20,25 @@ Tener instalado previamente los siguientes paquetes:
 * eksctl - The official CLI for Amazon EKS
 * kubectl
 
+## Installation
+Instalar Dependencias
+```bash
+    chmod +x dependencias.sh
+    ./dependencias.sh 
+```
 ## Modo de ejecución
+```bash
 ansible-playbook aks.yml -v
+```
+## Eliminar Recursos
+```bash
+ansible-playbook delete.yml -v
+```
+## AWS configure
+```bash
+aws configure
+AWS Access Key ID [None]: AKIAVCL5XGXLMHEXXXXX
+AWS Secret Access Key [None]: xthtcFnTyxHL4n42G97CFKi17/zWoOZC7FSUxxxx
+Default region name [None]: us-east-1
+Default output format [None]:
+```
