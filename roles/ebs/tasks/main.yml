@@ -30,6 +30,10 @@
     dest: /tmp/AmazonEKS_EBS_CSI_Driver_Policy.json
   #when: "'NoSuchEntity' in policy_check.stderr or policy_check.rc != 0"
 
+- name: Pausa para crear el JSON
+  pause:
+    seconds: 10  # Cambia este valor al número de segundos que quieras pausar
+
 - name: Crear o actualizar una política de IAM
   command: >
     aws iam create-policy
