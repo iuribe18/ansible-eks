@@ -26,6 +26,18 @@
       delay: 60
       ignore_errors: true
 
+    - name: Eliminar un rol de IAM
+      iam_role:
+        name: AmazonEKS_EBS_CSI_DriverRole
+        state: absent
+      register: delete_role_result
+
+    - name: Eliminar política adjunta al rol
+      iam_policy:
+        name: AmazonEKS_EBS_CSI_Driver_Policy
+        state: absent
+      register: delete_policy_result
+
     - name: Eliminar el clúster de EKS
       command:
         cmd: aws eks delete-cluster --name "{{ cluster_name }}"
